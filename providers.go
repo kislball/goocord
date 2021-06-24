@@ -19,4 +19,5 @@ type CacheProvider interface {
 	Delete(namespace string, key string) error                 // Delete deletes a pair in Key/Value storage
 	Clear(namespace string) error                              // Clear clears entire namespace
 	GetAll(namespace string) (map[string]interface{}, error)   // GetAll gets all key/value pairs
+	Total(namespace string) (int, error)                       // Total returns total amount of k/v pairs
 }

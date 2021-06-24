@@ -77,3 +77,9 @@ func (c *MapCacheProvider) GetAll(namespace string) (map[string]interface{}, err
 	ns := c.getNamespace(namespace)
 	return ns.data, nil
 }
+
+// Total returns total amount of pairs stored in MapCacheNamespace
+func (c *MapCacheProvider) Total(namespace string) (int, error) {
+	ns := c.getNamespace(namespace)
+	return len(ns.data), nil
+}
