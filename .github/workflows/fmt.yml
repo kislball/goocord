@@ -4,6 +4,10 @@ on:
   - push
 
 
-steps:
-  - name: Check code formatting using gofmt
-    uses: Jerome1337/gofmt-action@v1.0.4
+jobs:
+  fmt:
+    name: fmt
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check code formatting using gofmt
+        uses: Jerome1337/gofmt-action@v1.0.4
