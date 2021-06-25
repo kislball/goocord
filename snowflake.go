@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+// Snowflake represents a Twitter snowflake.
+// See https://discord.com/developers/docs/reference#snowflakes for more details.
 type Snowflake struct {
 	Time time.Time
 	WorkerID int64
@@ -12,6 +14,7 @@ type Snowflake struct {
 	Increment int64
 }
 
+// NewSnowflake parses a Snowflake
 func NewSnowflake(snowflake string) (*Snowflake, error) {
 	num, err := strconv.ParseInt(snowflake, 10, 64)
 	if err != nil {
