@@ -5,5 +5,11 @@ machines.
 ## Concepts
 GooCord uses a concept of *providers*. These are special structures, which 
 implement provider interfaces. It makes the library very extensive and reliable.
+## Features
+- Thread-safe
+- Scalable
+- Pluggable
+- Built-in sharding and framework
+- ...and more is coming
 
 **UNDER DEVELOPMENT**

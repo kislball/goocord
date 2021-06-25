@@ -27,9 +27,9 @@ type CacheProvider interface {
 // RestProvider represents a requester which sends requests to Discord.
 // Internally, GooCord doesn't implement ratelimiting, RestProviders are responsible for that
 type RestProvider interface {
-	UseToken(token string)                                                                                     // UseToken sets a token to use
-	UseAPI(url string)                                                                                         // UseAPI sets an API url
-	Request(method string, endpoint string, headers map[string]string, body interface{}) (RestResponse, error) // Request sends a request to Discord API
+	UseAuth(token string)                                                                                       // UseToken sets a token to use
+	UseAPI(url string)                                                                                          // UseAPI sets an API url
+	Request(method string, endpoint string, headers map[string]string, body interface{}) (*RestResponse, error) // Request sends a request to Discord API
 }
 
 // RestResponse represents a response from Discord API
