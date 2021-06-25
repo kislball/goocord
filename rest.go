@@ -9,14 +9,17 @@ import (
 	"strings"
 )
 
-// TODO: docs and ratelimits
+// TODO: ratelimits
 
+// HTTPRestProvider is a basic RestProvider used by default.
+// Uses HTTP to communicate with Discord's API
 type HTTPRestProvider struct {
-	Auth   string
-	URL    string
-	Client *http.Client
+	Auth   string // Authentication header used by this HTTPRestProvider
+	URL    string // Base API url
+	Client *http.Client // Client used for requests
 }
 
+// NewHTTPRestProvider creates a new HTTPRestProvider
 func NewHTTPRestProvider(auth string) *HTTPRestProvider {
 	return &HTTPRestProvider{
 		auth,
@@ -25,18 +28,22 @@ func NewHTTPRestProvider(auth string) *HTTPRestProvider {
 	}
 }
 
+// UseAuth sets a new Authorization header
 func (h *HTTPRestProvider) UseAuth(auth string) {
 	h.Auth = auth
 }
 
+// UseAPI changes API url
 func (h *HTTPRestProvider) UseAPI(url string) {
 	h.URL = url
 }
 
+// getURL concats endpoint and base API url
 func (h *HTTPRestProvider) getURL(endpoint string) string {
 	return fmt.Sprintf("%s/%s", h.URL, endpoint)
 }
 
+// convertBody transforms data to array of bytes
 func (h *HTTPRestProvider) convertBody(data interface{}) ([]byte, error) {
 	d, err := json.Marshal(data)
 	if err != nil {
@@ -45,12 +52,14 @@ func (h *HTTPRestProvider) convertBody(data interface{}) ([]byte, error) {
 	return d, nil
 }
 
+// setHeaders takes map of headers and applies them to the req
 func (h *HTTPRestProvider) setHeaders(req *http.Request, headers map[string]string) {
 	for k, v := range headers {
 		req.Header.Set(k, v)
 	}
 }
 
+// transformResponse transforms http.Response into RestResponse
 func (h *HTTPRestProvider) transformResponse(resp *http.Response) (*RestResponse, error) {
 	headers := make(map[string]string)
 
@@ -76,6 +85,7 @@ func (h *HTTPRestProvider) transformResponse(resp *http.Response) (*RestResponse
 	}, nil
 }
 
+// Request sends request to Discord
 func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[string]string, body interface{}) (*RestResponse, error) {
 	url := h.getURL(endpoint)
 	d, err := h.convertBody(body)
