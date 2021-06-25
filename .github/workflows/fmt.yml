@@ -1,0 +1,9 @@
+name: Go fmt
+on:
+  - pull_request
+  - push
+
+
+steps:
+  - name: Check code formatting using gofmt
+    uses: Jerome1337/gofmt-action@v1.0.4
