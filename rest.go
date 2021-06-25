@@ -14,8 +14,8 @@ import (
 // HTTPRestProvider is a basic RestProvider used by default.
 // Uses HTTP to communicate with Discord's API
 type HTTPRestProvider struct {
-	Auth   string // Authentication header used by this HTTPRestProvider
-	URL    string // Base API url
+	Auth   string       // Authentication header used by this HTTPRestProvider
+	URL    string       // Base API url
 	Client *http.Client // Client used for requests
 }
 
