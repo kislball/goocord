@@ -98,6 +98,7 @@ func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[s
 	}
 	h.setHeaders(req, headers)
 	req.Header.Set("Authorization", h.Auth)
+	req.Header.Set("User-Agent", fmt.Sprintf("DiscordBot (https://github.com/kislball/goocord) %s", VERSION))
 	resp, err3 := h.Client.Do(req)
 	if err3 != nil {
 		return nil, err3
