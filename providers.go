@@ -42,7 +42,10 @@ type RestResponse struct {
 // GatewayProvider represents a bi-directional connection between
 // Discord and GooCord
 type GatewayProvider interface {
-	UseToken(token string)        // UseToken sets a token to use
-	Connect(shard int, total int) // Start connection to Discord with given shard ID and total shards
-	Close()                       // Closes connection
+	UseToken(token string)           // UseToken sets a token to use
+	Connect(shard int, total int)    // Start connection to Discord with given shard ID and total shards
+	Close()                          // Closes connection
+	OnOpen(func())                   // Add an OnOpen handler
+	OnClose(func())                  // Add an OnClose handler
+	OnPacket(func(json interface{})) // Add an OnPacket handler
 }
