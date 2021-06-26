@@ -27,7 +27,7 @@ type CacheProvider interface {
 // RestProvider represents a requester which sends requests to Discord.
 // Internally, GooCord doesn't implement ratelimiting, RestProviders are responsible for that
 type RestProvider interface {
-	UseAuth(token string)                                                                                       // UseToken sets a token to use
+	UseAuth(token string)                                                                                       // UseAuth sets an authorization header
 	UseAPI(url string)                                                                                          // UseAPI sets an API url
 	Request(method string, endpoint string, headers map[string]string, body interface{}) (*RestResponse, error) // Request sends a request to Discord API
 }
@@ -37,4 +37,12 @@ type RestResponse struct {
 	StatusCode int               // HTTP status code
 	Headers    map[string]string // HTTP Headers
 	Body       interface{}       // Body
+}
+
+// GatewayProvider represents a bi-directional connection between
+// Discord and GooCord
+type GatewayProvider interface {
+	UseToken(token string)        // UseToken sets a token to use
+	Connect(shard int, total int) // Start connection to Discord with given shard ID and total shards
+	Close()                       // Closes connection
 }
