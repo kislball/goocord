@@ -9,6 +9,8 @@ type WebSocketGatewayProvider struct {
 	Conn   websocket.Conn
 	Token  string
 	EventEmitter
+	Shard  int
+	Shards int
 }
 
 // UseToken sets a token to use
@@ -16,21 +18,37 @@ func (w *WebSocketGatewayProvider) UseToken(token string) {
 	w.Token = token
 }
 
-func (w *WebSocketGatewayProvider) Connect(shard int, total int) {}
+// Connect instantiates connection to Discord
+func (w *WebSocketGatewayProvider) Connect(shard int, total int) {
+	w.Shard = shard
+	w.Shards = total
+}
 
-func (w *WebSocketGatewayProvider) OnOpen(handler func ()) {
+// OnOpen adds open event handler
+func (w *WebSocketGatewayProvider) OnOpen(handler func()) {
 	w.AddHandler("open", handler)
 }
 
+// OnClose adds close event handler
 func (w *WebSocketGatewayProvider) OnClose(handler func()) {
 	w.AddHandler("close", handler)
 }
 
+// OnPacket adds packet event handler
 func (w *WebSocketGatewayProvider) OnPacket(handler func(message interface{})) {
 	w.AddHandler("packet", handler)
 }
 
+// Close aborts the connection
 func (w *WebSocketGatewayProvider) Close() {
 	w.Conn.Close()
 	w.Emit("close")
+}
+
+// Send sends data to websocket
+func (w *WebSocketGatewayProvider) Send(json interface{}) {}
+
+// ShardInfo returns information about shards running
+func (w *WebSocketGatewayProvider) ShardInfo() [2]int {
+	return [2]int{w.Shard, w.Shards}
 }

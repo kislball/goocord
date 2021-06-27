@@ -46,4 +46,6 @@ type GatewayProvider interface {
 	OnOpen(func())                   // Add an OnOpen handler
 	OnClose(func())                  // Add an OnClose handler
 	OnPacket(func(json interface{})) // Add an OnPacket handler
+	Send(json interface{})           // Send a packet
+	ShardInfo() [2]int               // Shard ID and total shards ran by this provider
 }
