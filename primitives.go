@@ -22,9 +22,36 @@ type ActivityPrimitive struct {
 	State      string                      `json:"state,omitempty"`
 	Instance   bool                        `json:"instance,omitempty"`
 	Flags      int                         `json:"flags,omitempty"`
+	Party      ActivityPartyPrimitive      `json:"party,omitempty"`
+	Assets     ActivityAssetsPrimitive     `json:"assets,omitempty"`
+	Secrets    ActivitySecretsPrimitive    `json:"secrets,omitempty"`
+	Buttons    []ActivityButtonPrimitive   `json:"buttons,omitempty"`
 }
 
 type ActivityTimestampsPrimitive struct {
 	End   int64 `json:"end,omitempty"`
 	Start int64 `json:"start,omitempty"`
+}
+
+type ActivityPartyPrimitive struct {
+	Id   string `json:"id,omitempty"`
+	Size [2]int `json:"size,omitempty"`
+}
+
+type ActivityAssetsPrimitive struct {
+	LargeImage string `json:"large_image,omitempty"`
+	LargeText  string `json:"large_text,omitempty"`
+	SmallImage string `json:"small_image,omitempty"`
+	SmallText  string `json:"small_text,omitempty"`
+}
+
+type ActivitySecretsPrimitive struct {
+	Join     string `json:"join,omitempty"`
+	Spectate string `json:"spectate,omitempty"`
+	Match    string `json:"match,omitempty"`
+}
+
+type ActivityButtonPrimitive struct {
+	Label string `json:"label"`
+	URL   string `json:"url"`
 }

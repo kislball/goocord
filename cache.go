@@ -52,7 +52,7 @@ func (c *MapCacheProvider) Set(namespace string, key string, value interface{}) 
 }
 
 // Delete deletes a key pair from MapCacheNamespace
-func (c *MapCacheProvider) Delete(namespace string, key string) (err error){
+func (c *MapCacheProvider) Delete(namespace string, key string) (err error) {
 	ns := c.getNamespace(namespace)
 	ns.Lock()
 	defer ns.Unlock()
