@@ -92,6 +92,8 @@ func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[s
 	if resp.StatusCode == 429 {
 		retry, _ := strconv.Atoi(respRaw.Header.Get("Retry-After"))
 		time.Sleep(time.Duration(retry) * time.Second)
+		resp, err = h.Request(method, endpoint, headers, body)
+		return
 	}
 
 	resp, err = h.transformResponse(respRaw)
