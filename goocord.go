@@ -1,5 +1,5 @@
 /*
-Package goocord contains GooCord is a simple, robust and versatile Discord-API
+Package goocord contains GooCord - a simple, robust and versatile Discord-API
 library made for Go.
 */
 package goocord
