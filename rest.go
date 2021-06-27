@@ -6,10 +6,10 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"strconv"
 	"strings"
+	"time"
 )
-
-// TODO: ratelimits
 
 // HTTPRestProvider is a basic RestProvider used by default.
 // Uses HTTP to communicate with Discord's API
@@ -44,12 +44,9 @@ func (h *HTTPRestProvider) getURL(endpoint string) string {
 }
 
 // convertBody transforms data to array of bytes
-func (h *HTTPRestProvider) convertBody(data interface{}) ([]byte, error) {
-	d, err := json.Marshal(data)
-	if err != nil {
-		return nil, err
-	}
-	return d, nil
+func (h *HTTPRestProvider) convertBody(data interface{}) (d []byte, err error) {
+	d, err = json.Marshal(data)
+	return
 }
 
 // setHeaders takes map of headers and applies them to the req
@@ -60,7 +57,7 @@ func (h *HTTPRestProvider) setHeaders(req *http.Request, headers map[string]stri
 }
 
 // transformResponse transforms http.Response into RestResponse
-func (h *HTTPRestProvider) transformResponse(resp *http.Response) (*RestResponse, error) {
+func (h *HTTPRestProvider) transformResponse(resp *http.Response) (ret *RestResponse, err error) {
 	headers := make(map[string]string)
 
 	for k, v := range resp.Header {
@@ -68,46 +65,36 @@ func (h *HTTPRestProvider) transformResponse(resp *http.Response) (*RestResponse
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		return nil, err
-	}
 
 	var body interface{}
-	err2 := json.Unmarshal(b, &body)
-	if err2 != nil {
-		return nil, err2
-	}
+	err = json.Unmarshal(b, &body)
 
-	return &RestResponse{
+	ret = &RestResponse{
 		resp.StatusCode,
 		headers,
 		body,
-	}, nil
+	}
+
+	return
 }
 
-// Request sends request to Discord
-func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[string]string, body interface{}) (*RestResponse, error) {
+// Request sends requests to Discord
+func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[string]string, body interface{}) (resp *RestResponse, err error) {
 	url := h.getURL(endpoint)
 	d, err := h.convertBody(body)
-	if err != nil {
-		return nil, err
-	}
-	req, errreq := http.NewRequest(method, url, bytes.NewBuffer(d))
-	if errreq != nil {
-		return nil, errreq
-	}
+	req, err := http.NewRequest(method, url, bytes.NewBuffer(d))
+
 	h.setHeaders(req, headers)
 	req.Header.Set("Authorization", h.Auth)
 	req.Header.Set("User-Agent", fmt.Sprintf("DiscordBot (https://github.com/kislball/goocord, %s)", VERSION))
-	resp, err3 := h.Client.Do(req)
-	if err3 != nil {
-		return nil, err3
+
+	respRaw, err := h.Client.Do(req)
+	if resp.StatusCode == 429 {
+		retry, _ := strconv.Atoi(respRaw.Header.Get("Retry-After"))
+		time.Sleep(time.Duration(retry) * time.Second)
 	}
 
-	trresp, err4 := h.transformResponse(resp)
-	if err4 != nil {
-		return nil, err
-	}
+	resp, err = h.transformResponse(respRaw)
 
-	return trresp, nil
+	return
 }

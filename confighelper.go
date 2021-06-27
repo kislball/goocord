@@ -20,16 +20,13 @@ func NewConfigHelper(file string) (*ConfigHelper, error) {
 }
 
 // Token reads token from a file
-func (c *ConfigHelper) Token() (string, error) {
+func (c *ConfigHelper) Token() (token string, err error) {
 	file, err := os.Open(c.File)
 	if err != nil {
 		return "", err
 	}
 
-	token, err2 := ioutil.ReadAll(file)
-	if err2 != nil {
-		return "", err
-	}
+	tk, err := ioutil.ReadAll(file)
 
-	return string(token), nil
+	return string(tk), err
 }

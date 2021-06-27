@@ -36,50 +36,47 @@ func (c *MapCacheProvider) getNamespace(namespace string) *MapCacheNamespace {
 }
 
 // Get gets a key from specific MapCacheNamespace
-func (c *MapCacheProvider) Get(namespace string, key string) (interface{}, error) {
+func (c *MapCacheProvider) Get(namespace string, key string) (v interface{}, err error) {
 	ns := c.getNamespace(namespace)
-	v := ns.data[key]
-	if v == nil {
-		return nil, NotFoundError
-	}
-	return v, nil
+	v = ns.data[key]
+	return
 }
 
 // Set sets a key in given MapCacheNamespace
-func (c *MapCacheProvider) Set(namespace string, key string, value interface{}) error {
+func (c *MapCacheProvider) Set(namespace string, key string, value interface{}) (err error) {
 	ns := c.getNamespace(namespace)
 	ns.Lock()
 	defer ns.Unlock()
 	ns.data[key] = value
-	return nil
+	return
 }
 
 // Delete deletes a key pair from MapCacheNamespace
-func (c *MapCacheProvider) Delete(namespace string, key string) error {
+func (c *MapCacheProvider) Delete(namespace string, key string) (err error){
 	ns := c.getNamespace(namespace)
 	ns.Lock()
 	defer ns.Unlock()
 	delete(ns.data, key)
-	return nil
+	return
 }
 
 // Clear clears MapCacheNamespace
-func (c *MapCacheProvider) Clear(namespace string) error {
+func (c *MapCacheProvider) Clear(namespace string) (err error) {
 	ns := c.getNamespace(namespace)
 	ns.Lock()
 	defer ns.Unlock()
 	ns.data = map[string]interface{}{}
-	return nil
+	return
 }
 
 // GetAll gets all pairs from MapCacheNamespace
-func (c *MapCacheProvider) GetAll(namespace string) (map[string]interface{}, error) {
-	ns := c.getNamespace(namespace)
-	return ns.data, nil
+func (c *MapCacheProvider) GetAll(namespace string) (data map[string]interface{}, err error) {
+	data = c.getNamespace(namespace).data
+	return
 }
 
 // Total returns total amount of pairs stored in MapCacheNamespace
-func (c *MapCacheProvider) Total(namespace string) (int, error) {
-	ns := c.getNamespace(namespace)
-	return len(ns.data), nil
+func (c *MapCacheProvider) Total(namespace string) (res int, err error) {
+	res = len(c.getNamespace(namespace).data)
+	return
 }

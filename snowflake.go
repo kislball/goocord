@@ -15,16 +15,15 @@ type Snowflake struct {
 }
 
 // NewSnowflake parses a Snowflake
-func NewSnowflake(snowflake string) (*Snowflake, error) {
+func NewSnowflake(snowflake string) (sw *Snowflake, err error) {
 	num, err := strconv.ParseInt(snowflake, 10, 64)
-	if err != nil {
-		return nil, err
-	}
 
-	return &Snowflake{
+	sw = &Snowflake{
 		time.Unix(((num>>22)+1420070400000)/1000, 0),
 		(num & 0x3E0000) >> 17,
 		(num & 0x1F000) >> 12,
 		num & 0xFFF,
-	}, nil
+	}
+
+	return
 }
