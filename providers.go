@@ -41,7 +41,7 @@ type RestResponse struct {
 // one shard.
 type GatewayProvider interface {
 	UseToken(token string)           // UseToken sets a token to use
-	Connect(shard int, total int)    // Start connection to Discord with given shard ID and total shards
+	Connect(shard int, total int) error   // Start connection to Discord with given shard ID and total shards
 	Close()                          // Closes connection
 	OnOpen(func())                   // Add an OnOpen handler
 	OnClose(func())                  // Add an OnClose handler

@@ -1,12 +1,15 @@
 package goocord
 
-import "github.com/gorilla/websocket"
+import (
+	"github.com/gorilla/websocket"
+	"net/http"
+)
 
 // WebSocketGatewayProvider is a basic GatewayProvider used by default.
 // Uses WS to communicate with Discord's gateway
 type WebSocketGatewayProvider struct {
-	dialer websocket.Dialer
-	Conn   websocket.Conn
+	dialer *websocket.Dialer
+	Conn   *websocket.Conn
 	Token  string
 	EventEmitter
 	Shard  int
@@ -19,9 +22,14 @@ func (w *WebSocketGatewayProvider) UseToken(token string) {
 }
 
 // Connect instantiates connection to Discord
-func (w *WebSocketGatewayProvider) Connect(shard int, total int) {
+func (w *WebSocketGatewayProvider) Connect(shard int, total int) (err error) {
 	w.Shard = shard
 	w.Shards = total
+
+	w.dialer = websocket.DefaultDialer
+	conn, _, err := w.dialer.Dial(GATEWAY_URL, http.Header{})
+	w.Conn = conn
+	return
 }
 
 // OnOpen adds open event handler
