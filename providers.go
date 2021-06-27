@@ -12,9 +12,6 @@ type Providers struct {
 var NotFoundError = errors.New("not found")
 
 // CacheProvider represents a cache storage.
-// Using interface{} instead of structures(e.g. Guild or Member),
-// because remote cache storages(e.g. redis or memcached) cannot properly
-// handle Go structures.
 type CacheProvider interface {
 	Get(namespace string, key string) (interface{}, error)     // Get gets a key from Key/Value storage.
 	Set(namespace string, key string, value interface{}) error // Set creates a new Key/Value pair in storage.
@@ -40,7 +37,8 @@ type RestResponse struct {
 }
 
 // GatewayProvider represents a bi-directional connection between
-// Discord and GooCord
+// Discord and GooCord. A single GatewayProvider can only handle
+// one shard.
 type GatewayProvider interface {
 	UseToken(token string)           // UseToken sets a token to use
 	Connect(shard int, total int)    // Start connection to Discord with given shard ID and total shards
