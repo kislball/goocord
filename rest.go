@@ -89,7 +89,7 @@ func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[s
 	req.Header.Set("User-Agent", fmt.Sprintf("DiscordBot (https://github.com/kislball/goocord, %s)", VERSION))
 
 	respRaw, err := h.Client.Do(req)
-	if resp.StatusCode == 429 {
+	if respRaw.StatusCode == 429 {
 		retry, _ := strconv.Atoi(respRaw.Header.Get("Retry-After"))
 		time.Sleep(time.Duration(retry) * time.Second)
 		resp, err = h.Request(method, endpoint, headers, body)
