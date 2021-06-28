@@ -27,7 +27,7 @@ func (w *WebSocketGatewayProvider) Connect(shard int, total int) (err error) {
 	w.Shards = total
 
 	w.dialer = websocket.DefaultDialer
-	conn, _, err := w.dialer.Dial(GATEWAY_URL, http.Header{})
+	conn, _, err := w.dialer.Dial(GatewayUrl, http.Header{})
 	w.Conn = conn
 	return
 }
