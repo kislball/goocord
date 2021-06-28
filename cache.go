@@ -5,9 +5,6 @@ import (
 	"sync"
 )
 
-// ErrCacheKeyNotExists indicates that supplied key does not exist in the namespace
-var ErrCacheKeyNotExists = errors.New("cache key does not exist")
-
 // MapCacheProvider is a basic CacheProvider used by default. Uses map
 // as its main storage.
 type MapCacheProvider struct {
@@ -49,9 +46,9 @@ func (c *MapCacheProvider) getNamespace(namespace string) (ns *MapCacheNamespace
 // Get gets a key from specific MapCacheNamespace
 func (c *MapCacheProvider) Get(namespace string, key string) (rv interface{}, err error) {
 	ns := c.getNamespace(namespace)
-	rv = ns.data[key]
-	if rv == nil {
-		return nil, ErrCacheKeyNotExists
+	rv, ok := ns.data[key]
+	if !ok {
+		err = NotFoundError
 	}
 	return
 }
