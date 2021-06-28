@@ -38,7 +38,10 @@ func (c *MapCacheProvider) getNamespace(namespace string) *MapCacheNamespace {
 // Get gets a key from specific MapCacheNamespace
 func (c *MapCacheProvider) Get(namespace string, key string) (v interface{}, err error) {
 	ns := c.getNamespace(namespace)
-	v = ns.data[key]
+	v, ok := ns.data[key]
+	if !ok {
+		err = NotFoundError
+	}
 	return
 }
 
