@@ -1,6 +1,12 @@
 package goocord
 
-import "sync"
+import (
+	"errors"
+	"sync"
+)
+
+// ErrCacheKeyNotExists indicates that supplied key does not exist in the namespace
+var ErrCacheKeyNotExists = errors.New("cache key does not exist")
 
 // MapCacheProvider is a basic CacheProvider used by default. Uses map
 // as its main storage.
@@ -17,28 +23,36 @@ type MapCacheNamespace struct {
 
 // NewMapCacheProvider creates a new MapCacheProvider
 func NewMapCacheProvider() *MapCacheProvider {
-	return &MapCacheProvider{map[string]*MapCacheNamespace{}}
+	return &MapCacheProvider{
+		namespaces: map[string]*MapCacheNamespace{},
+	}
 }
 
 // NewMapCacheNamespace creates a new MapCacheNamespace
 func NewMapCacheNamespace() *MapCacheNamespace {
-	return &MapCacheNamespace{sync.RWMutex{}, map[string]interface{}{}}
+	return &MapCacheNamespace{
+		RWMutex: sync.RWMutex{},
+		data:    make(map[string]interface{}),
+	}
 }
 
 // getNamespace gets a MapCacheNamespace from MapCacheProvider
-func (c *MapCacheProvider) getNamespace(namespace string) *MapCacheNamespace {
-	ns := c.namespaces[namespace]
+func (c *MapCacheProvider) getNamespace(namespace string) (ns *MapCacheNamespace) {
+	ns = c.namespaces[namespace]
 	if ns == nil {
-		c.namespaces[namespace] = NewMapCacheNamespace()
-		ns = c.namespaces[namespace]
+		ns = NewMapCacheNamespace()
+		c.namespaces[namespace] = ns
 	}
-	return ns
+	return
 }
 
 // Get gets a key from specific MapCacheNamespace
-func (c *MapCacheProvider) Get(namespace string, key string) (v interface{}, err error) {
+func (c *MapCacheProvider) Get(namespace string, key string) (rv interface{}, err error) {
 	ns := c.getNamespace(namespace)
-	v = ns.data[key]
+	rv = ns.data[key]
+	if rv == nil {
+		return nil, ErrCacheKeyNotExists
+	}
 	return
 }
 
@@ -65,18 +79,16 @@ func (c *MapCacheProvider) Clear(namespace string) (err error) {
 	ns := c.getNamespace(namespace)
 	ns.Lock()
 	defer ns.Unlock()
-	ns.data = map[string]interface{}{}
+	ns.data = make(map[string]interface{})
 	return
 }
 
 // GetAll gets all pairs from MapCacheNamespace
 func (c *MapCacheProvider) GetAll(namespace string) (data map[string]interface{}, err error) {
-	data = c.getNamespace(namespace).data
-	return
+	return c.getNamespace(namespace).data, nil
 }
 
 // Total returns total amount of pairs stored in MapCacheNamespace
 func (c *MapCacheProvider) Total(namespace string) (res int, err error) {
-	res = len(c.getNamespace(namespace).data)
-	return
+	return len(c.getNamespace(namespace).data), nil
 }

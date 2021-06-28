@@ -14,9 +14,12 @@ import (
 // HTTPRestProvider is a basic RestProvider used by default.
 // Uses HTTP to communicate with Discord's API
 type HTTPRestProvider struct {
-	Auth   string       // Authentication header used by this HTTPRestProvider
-	URL    string       // Base API url
-	Client *http.Client // Client used for requests
+	// Authentication header used by this HTTPRestProvider
+	Auth string
+	// Base API url
+	URL string
+	// Client used for requests
+	Client *http.Client
 }
 
 // NewHTTPRestProvider creates a new HTTPRestProvider
@@ -45,8 +48,7 @@ func (h *HTTPRestProvider) getURL(endpoint string) string {
 
 // convertBody transforms data to array of bytes
 func (h *HTTPRestProvider) convertBody(data interface{}) (d []byte, err error) {
-	d, err = json.Marshal(data)
-	return
+	return json.Marshal(data)
 }
 
 // setHeaders takes map of headers and applies them to the req
@@ -57,7 +59,7 @@ func (h *HTTPRestProvider) setHeaders(req *http.Request, headers map[string]stri
 }
 
 // transformResponse transforms http.Response into RestResponse
-func (h *HTTPRestProvider) transformResponse(resp *http.Response) (ret *RestResponse, err error) {
+func (h *HTTPRestProvider) transformResponse(resp *http.Response) (res *RestResponse, err error) {
 	headers := make(map[string]string)
 
 	for k, v := range resp.Header {
@@ -65,17 +67,21 @@ func (h *HTTPRestProvider) transformResponse(resp *http.Response) (ret *RestResp
 	}
 
 	b, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		return
+	}
 
 	var body interface{}
 	err = json.Unmarshal(b, &body)
+	if err != nil {
+		return
+	}
 
-	ret = &RestResponse{
+	return &RestResponse{
 		resp.StatusCode,
 		headers,
 		body,
-	}
-
-	return
+	}, nil
 }
 
 // Request sends requests to Discord
@@ -96,7 +102,5 @@ func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[s
 		return
 	}
 
-	resp, err = h.transformResponse(respRaw)
-
-	return
+	return h.transformResponse(respRaw)
 }

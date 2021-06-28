@@ -13,39 +13,59 @@ var NotFoundError = errors.New("not found")
 
 // CacheProvider represents a cache storage.
 type CacheProvider interface {
-	Get(namespace string, key string) (interface{}, error)     // Get gets a key from Key/Value storage.
-	Set(namespace string, key string, value interface{}) error // Set creates a new Key/Value pair in storage.
-	Delete(namespace string, key string) error                 // Delete deletes a pair in Key/Value storage
-	Clear(namespace string) error                              // Clear clears entire namespace
-	GetAll(namespace string) (map[string]interface{}, error)   // GetAll gets all key/value pairs
-	Total(namespace string) (int, error)                       // Total returns total amount of k/v pairs
+	// Get a key from Key/Value storage.
+	Get(namespace string, key string) (interface{}, error)
+	// Createsa new Key/Value pair in storage.
+	Set(namespace string, key string, value interface{}) error
+	// Delete a pair in Key/Value storage
+	Delete(namespace string, key string) error
+	// Clear entire namespace
+	Clear(namespace string) error
+	// Get all key/value pairs
+	GetAll(namespace string) (map[string]interface{}, error)
+	// Total amount of k/v pairs
+	Total(namespace string) (int, error)
 }
 
 // RestProvider represents a requester which sends requests to Discord.
 // Internally, GooCord doesn't implement ratelimiting, RestProviders are responsible for that
 type RestProvider interface {
-	UseAuth(token string)                                                                                       // UseAuth sets an authorization header
-	UseAPI(url string)                                                                                          // UseAPI sets an API url
-	Request(method string, endpoint string, headers map[string]string, body interface{}) (*RestResponse, error) // Request sends a request to Discord API
+	// Set an authorization header
+	UseAuth(token string)
+	// Set API url
+	UseAPI(url string)
+	// Send a request to Discord API
+	Request(method string, endpoint string, headers map[string]string, body interface{}) (*RestResponse, error)
 }
 
 // RestResponse represents a response from Discord API
 type RestResponse struct {
-	StatusCode int               // HTTP status code
-	Headers    map[string]string // HTTP Headers
-	Body       interface{}       // Body
+	// HTTP status code
+	StatusCode int
+	// HTTP Headers
+	Headers map[string]string
+	// Body
+	Body interface{}
 }
 
 // GatewayProvider represents a bi-directional connection between
 // Discord and GooCord. A single GatewayProvider can only handle
 // one shard.
 type GatewayProvider interface {
-	UseToken(token string)           // UseToken sets a token to use
-	Connect(shard int, total int) error   // Start connection to Discord with given shard ID and total shards
-	Close()                          // Closes connection
-	OnOpen(func())                   // Add an OnOpen handler
-	OnClose(func())                  // Add an OnClose handler
-	OnPacket(func(json interface{})) // Add an OnPacket handler
-	Send(json interface{})           // Send a packet
-	ShardInfo() [2]int               // Shard ID and total shards ran by this provider
+	// Set the token to use
+	UseToken(token string)
+	// Open connection to Discord with given shard ID and total shards
+	Connect(shard int, total int) error
+	// Close the connection
+	Close()
+	// Add an OnOpen handler
+	OnOpen(func())
+	// Add an OnClose handler
+	OnClose(func())
+	// Add an OnPacket handler
+	OnPacket(func(json interface{}))
+	// Send a packet
+	Send(json interface{})
+	// Shard ID and total shards ran by this provider
+	ShardInfo() [2]int
 }
