@@ -92,7 +92,7 @@ func (h *HTTPRestProvider) Request(method string, endpoint string, headers map[s
 
 	h.setHeaders(req, headers)
 	req.Header.Set("Authorization", h.Auth)
-	req.Header.Set("User-Agent", fmt.Sprintf("DiscordBot (https://github.com/kislball/goocord, %s)", VERSION))
+	req.Header.Set("User-Agent", fmt.Sprintf("DiscordBot (https://github.com/kislball/goocord, %s)", Version))
 
 	respRaw, err := h.Client.Do(req)
 	if respRaw.StatusCode == 429 {
