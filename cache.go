@@ -1,7 +1,6 @@
 package goocord
 
 import (
-	"errors"
 	"sync"
 )
 
