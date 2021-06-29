@@ -6,7 +6,7 @@ package goocord
 
 import "fmt"
 
-const VERSION = "0.1.0"
+const Version = "0.1.0"
 
 type Client struct{}
 

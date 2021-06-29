@@ -6,10 +6,14 @@ package goocord
 
 // GatewayPresenceUpdatePrimitive is sent by the client to indicate a presence or status update.
 type GatewayPresenceUpdatePrimitive struct {
-	Since      int64               `json:"since,omitempty"` // Unix time (in milliseconds) of when the client went idle, or null if the client is not idle
-	Status     string              `json:"status"`          // The user's new status
-	AFK        bool                `json:"afk"`             // Whether or not the client is afk
-	Activities []ActivityPrimitive `json:"activities"`      // The user's activities
+	// Unix time (in milliseconds) of when the client went idle, or null if the client is not idle
+	Since int64 `json:"since,omitempty"`
+	// The user's new status
+	Status string `json:"status"`
+	// Whether or not the client is afk
+	AFK bool `json:"afk"`
+	// The user's activities
+	Activities []ActivityPrimitive `json:"activities"`
 }
 
 type ActivityPrimitive struct {
