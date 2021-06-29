@@ -12,5 +12,5 @@ func (f *Flags) Add(flag int) {
 
 // Has checks if a bit equals one
 func (f *Flags) Has(flag int) bool {
-	return f.Flags & flag == flag
+	return f.Flags&flag == flag
 }

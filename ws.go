@@ -9,16 +9,21 @@ import (
 // WebSocketGatewayProvider is a basic GatewayProvider used by default.
 // Uses WS to communicate with Discord's gateway
 type WebSocketGatewayProvider struct {
-	dialer *websocket.Dialer
-	Conn   *websocket.Conn
-	Token  string
+	dialer *websocket.Dialer // utility
+	Conn   *websocket.Conn   // active connection
+	Token  string            // token used
 	EventEmitter
-	Shard  int
-	Shards int
+	Shard    int                   // shard id
+	Shards   int                   // total shards passed in IDENTIFY
+	Ready    bool                  // whether the provider is ready
+	Presence GatewayPresenceUpdate // presence
 }
 
 // UseToken sets a token to use
 func (w *WebSocketGatewayProvider) UseToken(token string) {
+	if w.Ready {
+		panic("tried to set token while bot is running")
+	}
 	w.Token = token
 }
 
@@ -49,15 +54,32 @@ func (w *WebSocketGatewayProvider) OnPacket(handler func(message interface{})) {
 }
 
 // Close aborts the connection
-func (w *WebSocketGatewayProvider) Close() {
+func (w *WebSocketGatewayProvider) Close() error {
 	w.Conn.Close()
 	w.Emit("close")
+	return nil
 }
 
 // Send sends data to websocket
-func (w *WebSocketGatewayProvider) Send(json interface{}) {}
+func (w *WebSocketGatewayProvider) Send(json interface{}) error {
+	if !w.Ready {
+		return ProviderNotReadyError
+	}
+
+	return w.Conn.WriteJSON(json)
+}
 
 // ShardInfo returns information about shards running
 func (w *WebSocketGatewayProvider) ShardInfo() [2]int {
 	return [2]int{w.Shard, w.Shards}
+}
+
+// Changes the presence
+func (w *WebSocketGatewayProvider) UsePresence(update GatewayPresenceUpdate) (err error) {
+	w.Presence = update
+	if w.Ready {
+		err = w.Send(update.ToPrimitive())
+	}
+
+	return
 }

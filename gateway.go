@@ -6,13 +6,13 @@ import (
 
 type GatewayPresenceUpdate struct {
 	GatewayPresenceUpdatePrimitive
-	Since time.Time
+	Since      time.Time
 	Activities []Activity
 }
 
 func (g *GatewayPresenceUpdate) FromPrimitive(prim interface{}) {
 	p := prim.(*GatewayPresenceUpdatePrimitive)
-	g.Since = time.Unix(p.Since * 1000, 0)
+	g.Since = time.Unix(p.Since*1000, 0)
 	g.Status = p.Status
 	g.AFK = p.AFK
 
@@ -33,7 +33,7 @@ func (g *GatewayPresenceUpdate) ToPrimitive() interface{} {
 type Activity struct {
 	ActivityPrimitive
 	CreatedAt time.Time
-	Flags Flags
+	Flags     Flags
 }
 
 func (a *Activity) FromPrimitive(prim interface{}) {
@@ -41,7 +41,7 @@ func (a *Activity) FromPrimitive(prim interface{}) {
 	a.Name = p.Name
 	a.Type = p.Type
 	a.URL = p.URL
-	a.CreatedAt = time.Unix(p.CreatedAt * 1000, 0)
+	a.CreatedAt = time.Unix(p.CreatedAt*1000, 0)
 	a.Details = p.Details
 	a.State = p.State
 	a.Instance = p.Instance

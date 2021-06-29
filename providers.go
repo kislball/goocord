@@ -10,6 +10,7 @@ type Providers struct {
 }
 
 var NotFoundError = errors.New("not found")
+var ProviderNotReadyError = errors.New("provider is not ready")
 
 // CacheProvider represents a cache storage.
 type CacheProvider interface {
@@ -57,7 +58,7 @@ type GatewayProvider interface {
 	// Open connection to Discord with given shard ID and total shards
 	Connect(shard int, total int) error
 	// Close the connection
-	Close()
+	Close() error
 	// Add an OnOpen handler
 	OnOpen(func())
 	// Add an OnClose handler
@@ -65,7 +66,9 @@ type GatewayProvider interface {
 	// Add an OnPacket handler
 	OnPacket(func(json interface{}))
 	// Send a packet
-	Send(json interface{})
+	Send(json interface{}) error
 	// Shard ID and total shards ran by this provider
 	ShardInfo() [2]int
+	// Sets presence to use
+	UsePresence(update GatewayPresenceUpdate) error
 }
