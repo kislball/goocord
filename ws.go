@@ -2,6 +2,7 @@ package goocord
 
 import (
 	"github.com/gorilla/websocket"
+	"github.com/kislball/goocord/types"
 	"github.com/kislball/goocord/types/gateway"
 	"github.com/kislball/goocord/utils"
 	"net/http"
@@ -35,7 +36,7 @@ func (w *WebSocketGatewayProvider) Connect(shard int, total int) (err error) {
 	w.Shards = total
 
 	w.dialer = websocket.DefaultDialer
-	conn, _, err := w.dialer.Dial(EndpointGateway, http.Header{})
+	conn, _, err := w.dialer.Dial(types.EndpointGateway, http.Header{})
 	w.Conn = conn
 	return
 }
