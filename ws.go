@@ -16,7 +16,6 @@ type WebSocketGatewayProvider struct {
 	Shard    int                   // shard id
 	Shards   int                   // total shards passed in IDENTIFY
 	Ready    bool                  // whether the provider is ready
-	Presence GatewayPresenceUpdate // presence
 }
 
 // UseToken sets a token to use
@@ -72,14 +71,4 @@ func (w *WebSocketGatewayProvider) Send(json interface{}) error {
 // ShardInfo returns information about shards running
 func (w *WebSocketGatewayProvider) ShardInfo() [2]int {
 	return [2]int{w.Shard, w.Shards}
-}
-
-// Changes the presence
-func (w *WebSocketGatewayProvider) UsePresence(update GatewayPresenceUpdate) (err error) {
-	w.Presence = update
-	if w.Ready {
-		err = w.Send(update.ToPrimitive())
-	}
-
-	return
 }

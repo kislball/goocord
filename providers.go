@@ -69,6 +69,4 @@ type GatewayProvider interface {
 	Send(json interface{}) error
 	// Shard ID and total shards ran by this provider
 	ShardInfo() [2]int
-	// Sets presence to use
-	UsePresence(update GatewayPresenceUpdate) error
 }
