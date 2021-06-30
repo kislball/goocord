@@ -3,6 +3,7 @@ package goocord
 import (
 	"errors"
 	"github.com/kislball/goocord/types/gateway"
+	"github.com/kislball/goocord/utils"
 )
 
 // Providers represent a set of providers used by Client
@@ -72,4 +73,6 @@ type GatewayProvider interface {
 	ShardInfo() [2]int
 	// Sets presence
 	UsePresence(presence gateway.UpdatePresence) error
+	// Use intents
+	UseIntents(intents utils.Flags) error
 }

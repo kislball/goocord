@@ -1,10 +1,10 @@
 package goocord
 
 import (
-	"github.com/kislball/goocord/types/gateway"
-	"net/http"
-
 	"github.com/gorilla/websocket"
+	"github.com/kislball/goocord/types/gateway"
+	"github.com/kislball/goocord/utils"
+	"net/http"
 )
 
 // WebSocketGatewayProvider is a basic GatewayProvider used by default.
@@ -18,6 +18,7 @@ type WebSocketGatewayProvider struct {
 	Shards   int                    // total shards passed in IDENTIFY
 	Ready    bool                   // whether the provider is ready
 	Presence gateway.UpdatePresence // Current client's presence
+	Intents utils.Flags // Intents used
 }
 
 // UseToken sets a token to use
@@ -81,4 +82,12 @@ func (w *WebSocketGatewayProvider) UsePresence(presence gateway.UpdatePresence) 
 		err = w.Send(presence)
 	}
 	return
+}
+
+func (w *WebSocketGatewayProvider) UseIntents(intents utils.Flags) error {
+	if w.Ready {
+		panic("tried to set intents while bot is running")
+	}
+	w.Intents = intents
+	return nil
 }
