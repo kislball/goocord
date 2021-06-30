@@ -13,7 +13,7 @@ type WebSocketGatewayProvider struct {
 	dialer *websocket.Dialer // utility
 	Conn   *websocket.Conn   // active connection
 	Token  string            // token used
-	EventEmitter
+	utils.EventEmitter
 	Shard    int                    // shard id
 	Shards   int                    // total shards passed in IDENTIFY
 	Ready    bool                   // whether the provider is ready
@@ -58,7 +58,7 @@ func (w *WebSocketGatewayProvider) OnPacket(handler func(message interface{})) {
 // Close aborts the connection
 func (w *WebSocketGatewayProvider) Close() error {
 	w.Conn.Close()
-	w.Emit("close")
+	w.Emit("close", nil)
 	return nil
 }
 
