@@ -1,4 +1,4 @@
-package goocord
+package utils
 
 import "encoding/json"
 

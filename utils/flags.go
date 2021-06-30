@@ -1,4 +1,4 @@
-package goocord
+package utils
 
 // Flags represents a bitfield
 type Flags struct {
@@ -6,8 +6,10 @@ type Flags struct {
 }
 
 // Add adds a new bit
-func (f *Flags) Add(flag int) {
-	f.Flags = f.Flags | flag
+func (f *Flags) Add(flags ...int) {
+	for _, flag := range flags {
+		f.Flags = f.Flags | flag
+	}
 }
 
 // Has checks if a bit equals one
