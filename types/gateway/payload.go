@@ -102,7 +102,7 @@ type Identify struct {
 	LargeThreshold *int            `json:"large_threshold,omitempty"`
 	Shard          *[2]int         `json:"shard,omitempty"`
 	Presence       *UpdatePresence `json:"presence,omitempty"`
-	Intents        int
+	Intents        int             `json:"intents"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
