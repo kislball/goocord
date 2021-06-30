@@ -2,10 +2,10 @@ package gateway
 
 // https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
 type Payload struct {
-	Opcode int `json:"opcode"`
-	Data interface{} `json:"d,omitempty"`
-	Sequence int `json:"s,omitempty"`
-	Event string `json:"t,omitempty"`
+	Opcode   int         `json:"opcode"`
+	Data     interface{} `json:"d,omitempty"`
+	Sequence int         `json:"s,omitempty"`
+	Event    string      `json:"t,omitempty"`
 }
 
 const (
@@ -97,19 +97,19 @@ type UpdatePresencePayload struct {
 
 // https://discord.com/developers/docs/topics/gateway#identify-identify-structure
 type Identify struct {
-	Token string `json:"token"`
-	Compress *bool `json:"compress,omitempty"`
-	LargeThreshold *int `json:"large_threshold,omitempty"`
-	Shard *[2]int `json:"shard,omitempty"`
-	Presence *UpdatePresence `json:"presence,omitempty"`
-	Intents int
+	Token          string          `json:"token"`
+	Compress       *bool           `json:"compress,omitempty"`
+	LargeThreshold *int            `json:"large_threshold,omitempty"`
+	Shard          *[2]int         `json:"shard,omitempty"`
+	Presence       *UpdatePresence `json:"presence,omitempty"`
+	Intents        int
 }
 
 // https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
 type IdentifyProperties struct {
-	OS string `json:"os"`
+	OS      string `json:"os"`
 	Browser string `json:"browser"`
-	Device string `json:"device"`
+	Device  string `json:"device"`
 }
 
 type IdentifyPayload struct {

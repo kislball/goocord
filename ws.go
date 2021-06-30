@@ -18,7 +18,7 @@ type WebSocketGatewayProvider struct {
 	Shards   int                    // total shards passed in IDENTIFY
 	Ready    bool                   // whether the provider is ready
 	Presence gateway.UpdatePresence // Current client's presence
-	Intents utils.Flags // Intents used
+	Intents  utils.Flags            // Intents used
 }
 
 // UseToken sets a token to use
