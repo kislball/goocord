@@ -107,9 +107,9 @@ type Identify struct {
 
 // https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
 type IdentifyProperties struct {
-	OS      string `json:"os"`
-	Browser string `json:"browser"`
-	Device  string `json:"device"`
+	OS      string `json:"$os"`
+	Browser string `json:"$browser"`
+	Device  string `json:"$device"`
 }
 
 type IdentifyPayload struct {
