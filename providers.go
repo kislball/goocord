@@ -66,7 +66,7 @@ type GatewayProvider interface {
 	// Add an OnClose handler
 	OnClose(func())
 	// Add an OnPacket handler
-	OnPacket(func(json interface{}))
+	OnPacket(func(d GatewayProviderOnPacketData))
 	// Send a packet
 	Send(json interface{}) error
 	// Shard ID and total shards ran by this provider
@@ -75,4 +75,9 @@ type GatewayProvider interface {
 	UsePresence(presence gateway.UpdatePresence) error
 	// Use intents
 	UseIntents(intents utils.Flags) error
+}
+
+// Payload in OnPacket
+type GatewayProviderOnPacketData interface {
+	Data() interface{} // Get data
 }

@@ -51,7 +51,7 @@ func (w *WebSocketGatewayProvider) OnClose(handler func()) {
 }
 
 // OnPacket adds packet event handler
-func (w *WebSocketGatewayProvider) OnPacket(handler func(message interface{})) {
+func (w *WebSocketGatewayProvider) OnPacket(handler func(message GatewayProviderOnPacketData)) {
 	w.AddHandler("packet", handler)
 }
 
@@ -90,4 +90,12 @@ func (w *WebSocketGatewayProvider) UseIntents(intents utils.Flags) error {
 	}
 	w.Intents = intents
 	return nil
+}
+
+type WebSocketGatewayProviderOnPacketData struct {
+	data interface{}
+}
+
+func (w *WebSocketGatewayProviderOnPacketData) Data() interface{} {
+	return w.data
 }
