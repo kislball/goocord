@@ -17,67 +17,67 @@ const (
 
 // https://discord.com/developers/docs/topics/gateway#update-presence-gateway-presence-update-structure
 type UpdatePresence struct {
-	Since *int64 `json:"since,omitempty"`
-	Status string `json:"status"`
-	AFK bool `json:"afk"`
+	Since      *int64     `json:"since,omitempty"`
+	Status     string     `json:"status"`
+	AFK        bool       `json:"afk"`
 	Activities []Activity `json:"activities"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-structure
 type Activity struct {
-	Name string `json:"name"`
-	Type int `json:"type"`
-	URL *string `json:"url,omitempty"`
-	CreatedAt int64 `json:"created_at"`
-	ApplicationID *string `json:"application_id,omitempty"`
-	Details *string `json:"details,omitempty"`
-	State *string `json:"state,omitempty"`
-	Instance *bool `json:"instance,omitempty"`
-	Flags *int `json:"flags,omitempty"`
-	Timestamps *ActivityTimestamps `json:"timestamps,omitempty"`
-	Emoji *ActivityEmoji `json:"emoji,omitempty"`
-	Party *ActivityParty `json:"party,omitempty"`
-	Assets *ActivityAssets `json:"assets,omitempty"`
-	Secrets *ActivitySecrets `json:"secrets,omitempty"`
-	Buttons *[]ActivityButtons `json:"buttons,omitempty"`
+	Name          string              `json:"name"`
+	Type          int                 `json:"type"`
+	URL           *string             `json:"url,omitempty"`
+	CreatedAt     int64               `json:"created_at"`
+	ApplicationID *string             `json:"application_id,omitempty"`
+	Details       *string             `json:"details,omitempty"`
+	State         *string             `json:"state,omitempty"`
+	Instance      *bool               `json:"instance,omitempty"`
+	Flags         *int                `json:"flags,omitempty"`
+	Timestamps    *ActivityTimestamps `json:"timestamps,omitempty"`
+	Emoji         *ActivityEmoji      `json:"emoji,omitempty"`
+	Party         *ActivityParty      `json:"party,omitempty"`
+	Assets        *ActivityAssets     `json:"assets,omitempty"`
+	Secrets       *ActivitySecrets    `json:"secrets,omitempty"`
+	Buttons       *[]ActivityButtons  `json:"buttons,omitempty"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-timestamps
 type ActivityTimestamps struct {
 	Start *int `json:"start,omitempty"`
-	End *int `json:"end,omitempty"`
+	End   *int `json:"end,omitempty"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-emoji
 type ActivityEmoji struct {
-	Name string `json:"name"`
-	Id *string `json:"id,omitempty"`
-	Animated *bool `json:"animated,omitempty"`
+	Name     string  `json:"name"`
+	Id       *string `json:"id,omitempty"`
+	Animated *bool   `json:"animated,omitempty"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-party
 type ActivityParty struct {
-	Id *string `json:"id,omitempty"`
+	Id   *string `json:"id,omitempty"`
 	Size *[2]int `json:"size,omitempty"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-assets
 type ActivityAssets struct {
 	LargeImage *string `json:"large_image,omitempty"`
-	LargeText *string `json:"large_text,omitempty"`
+	LargeText  *string `json:"large_text,omitempty"`
 	SmallImage *string `json:"small_image,omitempty"`
-	SmallText *string `json:"small_text,omitempty"`
+	SmallText  *string `json:"small_text,omitempty"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-secrets
 type ActivitySecrets struct {
-	Join *string `json:"join,omitempty"`
+	Join     *string `json:"join,omitempty"`
 	Spectate *string `json:"spectate,omitempty"`
-	Match *string `json:"match,omitempty"`
+	Match    *string `json:"match,omitempty"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#activity-object-activity-buttons
 type ActivityButtons struct {
 	Label string `json:"label"`
-	URL string `json:"url"`
+	URL   string `json:"url"`
 }

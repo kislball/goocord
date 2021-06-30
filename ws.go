@@ -14,9 +14,9 @@ type WebSocketGatewayProvider struct {
 	Conn   *websocket.Conn   // active connection
 	Token  string            // token used
 	EventEmitter
-	Shard    int                   // shard id
-	Shards   int                   // total shards passed in IDENTIFY
-	Ready    bool                  // whether the provider is ready
+	Shard    int                    // shard id
+	Shards   int                    // total shards passed in IDENTIFY
+	Ready    bool                   // whether the provider is ready
 	Presence gateway.UpdatePresence // Current client's presence
 }
 

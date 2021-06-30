@@ -20,7 +20,7 @@ func TestFlags_Has(t *testing.T) {
 		t.Error("shit")
 	}
 
-	if f.Has(1<<9) {
+	if f.Has(1 << 9) {
 		t.Error("expected bitfield not to include 1<<9")
 	}
 }
