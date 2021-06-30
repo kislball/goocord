@@ -2,7 +2,7 @@ package gateway
 
 // https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
 type Payload struct {
-	Opcode   int         `json:"opcode"`
+	Opcode   int         `json:"op"`
 	Data     interface{} `json:"d,omitempty"`
 	Sequence int         `json:"s,omitempty"`
 	Event    string      `json:"t,omitempty"`
