@@ -97,12 +97,13 @@ type UpdatePresencePayload struct {
 
 // https://discord.com/developers/docs/topics/gateway#identify-identify-structure
 type Identify struct {
-	Token          string          `json:"token"`
-	Compress       *bool           `json:"compress,omitempty"`
-	LargeThreshold *int            `json:"large_threshold,omitempty"`
-	Shard          *[2]int         `json:"shard,omitempty"`
-	Presence       *UpdatePresence `json:"presence,omitempty"`
-	Intents        int             `json:"intents"`
+	Token          string             `json:"token"`
+	Compress       *bool              `json:"compress,omitempty"`
+	LargeThreshold *int               `json:"large_threshold,omitempty"`
+	Shard          *[2]int            `json:"shard,omitempty"`
+	Presence       *UpdatePresence    `json:"presence,omitempty"`
+	Intents        int                `json:"intents"`
+	Properties     IdentifyProperties `json:"properties"`
 }
 
 // https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties

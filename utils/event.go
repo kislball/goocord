@@ -10,7 +10,7 @@ func (e *EventEmitter) Emit(name string, data interface{}) {
 	handlers := e.Handlers[name]
 
 	for _, v := range handlers {
-		c := v.(func (data interface{}))
+		c := v.(func(data interface{}))
 		go c(data)
 	}
 }
