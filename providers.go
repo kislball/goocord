@@ -2,6 +2,7 @@ package goocord
 
 import (
 	"errors"
+	"github.com/kislball/goocord/types/gateway"
 )
 
 // Providers represent a set of providers used by Client
@@ -69,4 +70,6 @@ type GatewayProvider interface {
 	Send(json interface{}) error
 	// Shard ID and total shards ran by this provider
 	ShardInfo() [2]int
+	// Sets presence
+	UsePresence(presence gateway.UpdatePresence) error
 }
