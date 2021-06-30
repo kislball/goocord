@@ -1,5 +1,13 @@
 package gateway
 
+// https://discord.com/developers/docs/topics/gateway#payloads-gateway-payload-structure
+type Payload struct {
+	Opcode int `json:"opcode"`
+	Data interface{} `json:"d,omitempty"`
+	Sequence int `json:"s,omitempty"`
+	Event string `json:"t,omitempty"`
+}
+
 const (
 	// https://discord.com/developers/docs/topics/gateway#activity-object-activity-flags
 	ActivityFlagInstance = 1 << 0
@@ -80,4 +88,31 @@ type ActivitySecrets struct {
 type ActivityButtons struct {
 	Label string `json:"label"`
 	URL   string `json:"url"`
+}
+
+type UpdatePresencePayload struct {
+	Payload
+	Data UpdatePresence `json:"d"`
+}
+
+// https://discord.com/developers/docs/topics/gateway#identify-identify-structure
+type Identify struct {
+	Token string `json:"token"`
+	Compress *bool `json:"compress,omitempty"`
+	LargeThreshold *int `json:"large_threshold,omitempty"`
+	Shard *[2]int `json:"shard,omitempty"`
+	Presence *UpdatePresence `json:"presence,omitempty"`
+	Intents int
+}
+
+// https://discord.com/developers/docs/topics/gateway#identify-identify-connection-properties
+type IdentifyProperties struct {
+	OS string `json:"os"`
+	Browser string `json:"browser"`
+	Device string `json:"device"`
+}
+
+type IdentifyPayload struct {
+	Payload
+	Data Identify `json:"d"`
 }
