@@ -12,15 +12,17 @@ import (
 // WebSocketGatewayProvider is a basic GatewayProvider used by default.
 // Uses WS to communicate with Discord's gateway
 type WebSocketGatewayProvider struct {
+	utils.EventEmitter
 	dialer *websocket.Dialer // utility
 	Conn   *websocket.Conn   // active connection
 	Token  string            // token used
-	utils.EventEmitter
 	Shard    int                     // shard id
 	Shards   int                     // total shards passed in IDENTIFY
 	Ready    bool                    // whether the provider is ready
 	Presence *gateway.UpdatePresence // Current client's presence
 	Intents  utils.Flags             // Intents used
+	Sequence int // Sequence
+	SessionID int // Session's id used for resume
 }
 
 // UseToken sets a token to use
@@ -94,6 +96,16 @@ func (w *WebSocketGatewayProvider) UseIntents(intents utils.Flags) error {
 	}
 	w.Intents = intents
 	return nil
+}
+
+// Get heartbeat payload
+func (w *WebSocketGatewayProvider) GetHeartbeat() gateway.HeartbeatPayload {
+	return gateway.HeartbeatPayload{
+		Payload: gateway.Payload{
+			Opcode: 1,
+		},
+		Data: w.Sequence,
+	}
 }
 
 // Get identify payload

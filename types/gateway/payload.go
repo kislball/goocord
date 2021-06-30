@@ -117,3 +117,9 @@ type IdentifyPayload struct {
 	Payload
 	Data Identify `json:"d"`
 }
+
+// https://discord.com/developers/docs/topics/gateway#heartbeat
+type HeartbeatPayload struct {
+	Payload
+	Data int `json:"d"`
+}
