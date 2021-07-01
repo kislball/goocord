@@ -16,6 +16,7 @@ import (
 // WebSocketGatewayProvider is a basic GatewayProvider used by default.
 // Uses WS to communicate with Discord's gateway
 type WebSocketGatewayProvider struct {
+	utils.EventEmitter
 	dialer          *websocket.Dialer       // utility
 	Conn            *websocket.Conn         // active connection
 	Token           string                  // token used
@@ -27,6 +28,13 @@ type WebSocketGatewayProvider struct {
 	Sequence        *int                     // Sequence
 	SessionID       *int                     // Session's id used for resume
 	Zlib bool // Use zlib compression or not
+}
+
+func NewWebSocketGatewayProvider(token string, intents utils.Flags) *WebSocketGatewayProvider {
+	return &WebSocketGatewayProvider{
+		Token: token,
+		Intents: intents,
+	}
 }
 
 // UseToken sets a token to use
@@ -169,12 +177,14 @@ func (w *WebSocketGatewayProvider) Decode(data []byte, messageType int) (res int
 	}
 }
 
-// Data given to the OnPacket hook
-type WebSocketGatewayProviderOnPacketData struct {
-	data interface{}
+func (w *WebSocketGatewayProvider) OnPacket(f func (interface{})) {
+	w.On("packet", f)
 }
 
-// Get data
-func (w *WebSocketGatewayProviderOnPacketData) Data() interface{} {
-	return w.data
+func (w *WebSocketGatewayProvider) OnClose(f func()) {
+	w.On("close", f)
+}
+
+func (w *WebSocketGatewayProvider) OnOpen(f func()) {
+	w.On("open", f)
 }
