@@ -13,16 +13,16 @@ import (
 // Uses WS to communicate with Discord's gateway
 type WebSocketGatewayProvider struct {
 	utils.EventEmitter
-	dialer *websocket.Dialer // utility
-	Conn   *websocket.Conn   // active connection
-	Token  string            // token used
-	Shard    int                     // shard id
-	Shards   int                     // total shards passed in IDENTIFY
-	Ready    bool                    // whether the provider is ready
-	Presence *gateway.UpdatePresence // Current client's presence
-	Intents  utils.Flags             // Intents used
-	Sequence int // Sequence
-	SessionID int // Session's id used for resume
+	dialer    *websocket.Dialer       // utility
+	Conn      *websocket.Conn         // active connection
+	Token     string                  // token used
+	Shard     int                     // shard id
+	Shards    int                     // total shards passed in IDENTIFY
+	Ready     bool                    // whether the provider is ready
+	Presence  *gateway.UpdatePresence // Current client's presence
+	Intents   utils.Flags             // Intents used
+	Sequence  int                     // Sequence
+	SessionID int                     // Session's id used for resume
 }
 
 // UseToken sets a token to use
