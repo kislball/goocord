@@ -1,4 +1,4 @@
-package goocord
+package providers
 
 import (
 	"sync"
